@@ -12,12 +12,18 @@
         <servlet-name>ajax_proceso</servlet-name>
         <servlet-class>Servlet.ajax_proceso</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Registrar_venta</servlet-name>
+        <servlet-class>Servlet.Registrar_venta</servlet-class>
+    </servlet>
+    
     
     
     <servlet-mapping>
         <servlet-name>AddCart</servlet-name>
         <url-pattern>/agregarproducto</url-pattern>
     </servlet-mapping>
+    
     <servlet-mapping>
         <servlet-name>DeleteItem</servlet-name>
         <url-pattern>/borraritem</url-pattern>
@@ -27,6 +33,12 @@
         <servlet-name>ajax_proceso</servlet-name>
         <url-pattern>/ejecuciondeajax</url-pattern>
     </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>Registrar_venta</servlet-name>
+        <url-pattern>/Registrar_venta</url-pattern>
+    </servlet-mapping> 
+   
     
     <session-config>
         <session-timeout>

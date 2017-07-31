@@ -12,6 +12,7 @@ import Models.so_hea_models;
         
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.CallableStatement;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -42,10 +43,13 @@ public class Registrar_venta extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             String accion = request.getParameter("accion");
-            
+            out.print(accion);
+                int p = Integer.parseInt(request.getParameter("so_no"));
+            out.println(p);
+    
             if(accion.equals("RegistrarVenta"))
             {
-                this.RegistrarVenta(request,response);
+                this.RegistrarVenta(request, response);
             }
             
             
@@ -54,7 +58,9 @@ public class Registrar_venta extends HttpServlet {
 private void RegistrarVenta(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException
 {
-
+      String accion = request.getParameter("accion");
+         System.out.println(accion);
+    
     HttpSession sesion = request.getSession();
     ArrayList<Articulo> articulos = sesion.getAttribute("carrito") == null ? null : (ArrayList) sesion.getAttribute("carrito");
     
@@ -62,20 +68,48 @@ private void RegistrarVenta(HttpServletRequest request, HttpServletResponse resp
     Conexion con = new Conexion();
     cn = (Conexion) con.getConnection();
     
+    int p = Integer.parseInt(request.getParameter("so_no"));
+    System.out.println(p);
+    
     so_hea_beans shb = new so_hea_beans();
-    shb.setSo_no(Integer.parseInt(request.getParameter("")));
-    shb.setCus_id(request.getParameter(""));
-    shb.setZone_cd(request.getParameter(""));
-    shb.setPaymet_cd(request.getParameter(""));
+    shb.setSo_no(Integer.parseInt(request.getParameter("so_no")));
+    shb.setCus_id(request.getParameter("cus_id"));
+    shb.setZone_cd(request.getParameter("region"));
+    shb.setPaymet_cd(request.getParameter("paymet"));
     
      boolean resp = so_hea_models.Reg_so_hea(shb);
      
-     if(resp)
-     {
-         int so_no = Integer.parseInt(request.getParameter(""));
-         
-     
-     }
+        if(resp){
+            // Regostrar detalle vemta
+            int so_no = Integer.parseInt(request.getParameter("so_no"));
+            String li_no[] = request.getParameterValues("li_no");
+            String item_cd[] = request.getParameterValues("item_cd");
+            String cant[] = request.getParameterValues("quantity");
+            String tax_pe[] = request.getParameterValues("item_tax_pe");
+            String tax_va[] = request.getParameterValues("impuesto");
+
+              
+            for(int i=0; i<item_cd.length;i++){
+                try{
+                    CallableStatement cs = cn.getConnection().prepareCall("CALL I_SO_DET (?,?,?,?,?,?)");
+                    cs.setInt(1, so_no);
+                    cs.setString(2, li_no[i]);
+                    cs.setString(3, item_cd[i]);
+                    cs.setString(4, cant[i]);
+                    cs.setString(5, tax_pe[i]);
+                    cs.setString(6, tax_va[i]);
+                    int j = cs.executeUpdate();
+                    if(j==1){
+                        response.sendRedirect("shop.jsp?mens='Se ha registrado su compra correctamente'"); 
+                        articulos.clear();
+                    }else{
+                        response.sendRedirect("shop.jsp?mens='Error al registrar su compra'");
+                    }
+                }catch(Exception e){System.out.println(e);}
+            }
+        }else{
+            response.sendRedirect("shop.jsp?mens='Error al registrar su compra'");
+        }
     
     
     

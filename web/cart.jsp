@@ -72,7 +72,7 @@
 
     <jsp:include page="div_header.jsp"/>
     
-    <form action="recibe.jsp" method="GET">
+    <form action="Registrar_venta" method="POST">
 			<div class="table-responsive cart_info">
 				<table class="table table-condensed">
 					<thead>
@@ -95,20 +95,21 @@
                                                     
                                                     if(articulos != null){
                                                    
-                                                        
+                                                    int x=0;    
                                                     for(Articulo a: articulos){
-                                                         
+                                                         x++;
                                                         Item_beans ib= new  Item_models().getItem_beans(a.getIdProducto());
                                                      
                                                         total += (a.getCantidad() * ib.getItem_unit_price_va())+(ib.getItem_tax_pe()*ib.getItem_unit_price_va())/10.0;
-                                                        shcost += (a.getCantidad() * 0.2);
+                                                        shcost += (a.getCantidad() * ib.getItem_tax_pe()/10);
                                                         
                                                 %>
      
 						<tr>
                                                   
-                                                        <td class="cart_product">
-                                                            <h4> <%=a.getLi_no() %></h4>
+                                                        <td name="item" class="cart_product">
+                                                            <h4> <%=x %></h4>
+                                                            <input type="hidden" name="li_no" value="<%=x %>"/>
 							</td>
                                                         
 							<td class="cart_product">
@@ -118,28 +119,29 @@
                    
 							<td class="cart_description">
 								<h4><%=ib.getItem_ds()%></h4>
-                                                                <input type="hidden" name="item_ds[]" value="<%=ib.getItem_ds()%>"/>
+                                                                <input type="hidden" name="item_ds" value="<%=ib.getItem_ds()%>"/>
 								<p><%=ib.getItem_cd()%></p>
-                                                                <input type="hidden" name="item_cd[]" value="<%=ib.getItem_cd()%>"/>
+                                                                <input type="hidden" name="item_cd" value="<%=ib.getItem_cd()%>"/>
 							</td>
 							<td class="cart_price">
 								<p>$<%=ib.getItem_unit_price_va()%></p>
-                                                                <input type="hidden" name="item_unit_p[]" value="<%=ib.getItem_unit_price_va()%>"/>
+                                                                <input type="hidden" name="item_unit_p" value="<%=ib.getItem_unit_price_va()%>"/>
 							</td>
 							<td class="cart_quantity">
 								<div class="cart_quantity_button">
 									<a class="cart_quantity_up" href=""> + </a>
-									<input class="cart_quantity_input" type="text" name="quantity[]" value="<%=a.getCantidad()%>" autocomplete="off" size="2">
+									<input class="cart_quantity_input" type="text" name="quantity" value="<%=a.getCantidad()%>" autocomplete="off" size="2">
 									<a class="cart_quantity_down" href=""> - </a>
 								</div>
 							</td>
                                                         <td class="cart_total">
 								<p class="cart_price">$<%=Math.round(ib.getItem_tax_pe()*ib.getItem_unit_price_va())/10.0%></p>
-                                                                <input type="hidden" name="cart_price[]" value="<%=Math.round(ib.getItem_tax_pe()*ib.getItem_unit_price_va())/10.0%>"/>
+                                                                <input type="hidden" name="impuesto" value="<%=Math.round(ib.getItem_tax_pe()*ib.getItem_unit_price_va())/10.0%>"/>
                                                         </td> 
 							<td class="cart_total">
+                                                                <input type="hidden" name="item_tax_pe" value="<%=ib.getItem_tax_pe()%>"/>
 								<p class="cart_total_price">$<%= Math.round(((ib.getItem_unit_price_va()*a.getCantidad()*100.0) / 100.0)+(ib.getItem_tax_pe()*ib.getItem_unit_price_va())/10.0)%></p>
-                                                                <input type="hidden" name="cart_tota_price[]" value="<%= Math.round(((ib.getItem_unit_price_va()*a.getCantidad()*100.0) / 100.0)+(ib.getItem_tax_pe()*ib.getItem_unit_price_va())/10.0)%>"/>
+                                                                <input type="hidden" name="cart_tota_price" value="<%= Math.round(((ib.getItem_unit_price_va()*a.getCantidad()*100.0) / 100.0)+(ib.getItem_tax_pe()*ib.getItem_unit_price_va())/10.0)%>"/>
                                                         </td>
 							<td class="cart_delete">
 								<a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
@@ -187,7 +189,7 @@
                                                
                                                     
 							<li class="single_field">
-                                                            
+                                                            <input type="hidden" name="accion" value="RegistrarVenta">
                                                             <input type="hidden" name="so_no" value="4">
                                                             <input type="hidden" name="cus_id" value="45636">
 								<label>Zona:</label>
