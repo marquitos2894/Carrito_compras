@@ -57,7 +57,7 @@ public class so_hea_models
         cn =  con.conectar();
         
         try{
-            CallableStatement cs = cn.prepareCall("CALL V_SO_HEA()");
+            CallableStatement cs = cn.prepareCall("CALL max_so_no_hea()");
             ResultSet rs = cs.executeQuery();
             while(rs.next()){
                 so_he_det.add( new so_hea_beans (rs.getInt("so_no"),rs.getString("cus_id"), rs.getString("zone_cd"), rs.getString("paymet_cd")));

@@ -110,7 +110,10 @@ private void RegistrarVenta(HttpServletRequest request, HttpServletResponse resp
                     if(j==1){
                         response.sendRedirect("shop.jsp?mens='Se ha registrado su compra correctamente'"); 
                         articulos.clear();
-                        request.getRequestDispatcher("/shop.jsp").forward(request, response);
+                        //request.getRequestDispatcher("/shop.jsp").forward(request, response);
+                        //request.getRequestDispatcher("/params.jsp").forward(request, response);
+//...
+
                     }else{
                        
                         response.sendRedirect("shop.jsp?mens='Error al registrar su compra'");

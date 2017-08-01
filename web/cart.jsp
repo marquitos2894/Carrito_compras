@@ -91,8 +91,7 @@
                                                     String item_cd = request.getParameter("idproducto");
                                                     double total = 0;
                                                     double shcost = 0;
-                                                    int so_no = 0;
-                                                    
+                                                  
                                                     if(articulos != null){
                                                    
                                                     int x=0;    
@@ -167,11 +166,11 @@
                                           {
                                       //max_no mn = new so_hea_models().getMax();
                                             %>
-                                    <input type="hidden" name="so_no" value="<%=shb.getSo_no()%>">
-                                    <label><%=shb.getSo_no()%></label>
-                                    <label>marcos</label>
+                                    <input type="hidden" name="so_no" value="<%=shb.getSo_no()+1%>">
+                                    
+                                    
                                        <% } %>
-				<h3>MARCOS</h3>
+				
 				<p>Choose if you have a discount code or reward points you want to use or would like to estimate your delivery cost.</p>
 			</div>
 			<div class="row">
@@ -197,9 +196,7 @@
                                                     
 						</ul>
 						<ul class="user_info">
-                                                    
-                                               
-                                                    
+                                                                                  
 							<li class="single_field">
                                                             <input type="hidden" name="accion" value="RegistrarVenta">
                                                            
@@ -237,7 +234,7 @@
 				</div>
 				<div class="col-sm-6">
 					<div class="total_area">
-						<ul>    <li>Cart Sub Total <span>$<%=so_no%></span></li>
+						<ul>   
 							<li>Cart Sub Total <span>$<%=total%></span></li>
                                                         <input type="hidden"  name="cart_sub_total" value="<%=total%>"/>
 							<li>Eco Tax <span></span></li>
