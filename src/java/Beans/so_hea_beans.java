@@ -22,8 +22,11 @@ public class so_hea_beans {
         this.zone_cd = zone_cd;
         this.paymet_cd = paymet_cd;
     }
+
     
     public so_hea_beans() {}
+
+      
 
     public int getSo_no() {
         return so_no;

@@ -7,12 +7,13 @@ package Servlet;
 
 import Beans.Articulo;
 import Beans.so_hea_beans;
-import Models.Conexion;
+import Conexion.Conexion;
 import Models.so_hea_models;
         
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.CallableStatement;
+import java.sql.Connection;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,7 +26,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author Marco
  */
-@WebServlet(name = "Registrar_venta", urlPatterns = {"/Registrar_venta"})
+
 public class Registrar_venta extends HttpServlet {
 
     /**
@@ -43,13 +44,17 @@ public class Registrar_venta extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             String accion = request.getParameter("accion");
-            out.print(accion);
-                int p = Integer.parseInt(request.getParameter("so_no"));
-            out.println(p);
+            
+//                int p = Integer.parseInt(request.getParameter("so_no"));
+//            out.println(p);
     
             if(accion.equals("RegistrarVenta"))
+            {   out.print(accion);
+                RegistrarVenta(request, response);
+            }
+            else
             {
-                this.RegistrarVenta(request, response);
+                throw new AssertionError();
             }
             
             
@@ -58,19 +63,18 @@ public class Registrar_venta extends HttpServlet {
 private void RegistrarVenta(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException
 {
-      String accion = request.getParameter("accion");
-         System.out.println(accion);
+    
+    
+ 
     
     HttpSession sesion = request.getSession();
     ArrayList<Articulo> articulos = sesion.getAttribute("carrito") == null ? null : (ArrayList) sesion.getAttribute("carrito");
     
-    Conexion cn;
+    Connection cn;
     Conexion con = new Conexion();
-    cn = (Conexion) con.getConnection();
+    cn =  con.conectar();
     
-    int p = Integer.parseInt(request.getParameter("so_no"));
-    System.out.println(p);
-    
+       
     so_hea_beans shb = new so_hea_beans();
     shb.setSo_no(Integer.parseInt(request.getParameter("so_no")));
     shb.setCus_id(request.getParameter("cus_id"));
@@ -82,38 +86,42 @@ private void RegistrarVenta(HttpServletRequest request, HttpServletResponse resp
         if(resp){
             // Regostrar detalle vemta
             int so_no = Integer.parseInt(request.getParameter("so_no"));
+            //String so_no = request.getParameter("so_no");
             String li_no[] = request.getParameterValues("li_no");
             String item_cd[] = request.getParameterValues("item_cd");
             String cant[] = request.getParameterValues("quantity");
+            String pre_uni[] = request.getParameterValues("item_unit_p");
             String tax_pe[] = request.getParameterValues("item_tax_pe");
             String tax_va[] = request.getParameterValues("impuesto");
 
               
-            for(int i=0; i<item_cd.length;i++){
+            for(int i=0;i<cant.length;i++){
                 try{
-                    CallableStatement cs = cn.getConnection().prepareCall("CALL I_SO_DET (?,?,?,?,?,?)");
+                    CallableStatement cs = cn.prepareCall("CALL I_SO_DET (?,?,?,?,?,?,?)");
+//                    cs.setString(1, so_no);
                     cs.setInt(1, so_no);
                     cs.setString(2, li_no[i]);
                     cs.setString(3, item_cd[i]);
                     cs.setString(4, cant[i]);
-                    cs.setString(5, tax_pe[i]);
-                    cs.setString(6, tax_va[i]);
+                    cs.setString(5, pre_uni[i]);
+                    cs.setString(6, tax_pe[i]);
+                    cs.setString(7, tax_va[i]);
                     int j = cs.executeUpdate();
                     if(j==1){
                         response.sendRedirect("shop.jsp?mens='Se ha registrado su compra correctamente'"); 
                         articulos.clear();
+                        request.getRequestDispatcher("/shop.jsp").forward(request, response);
                     }else{
+                       
                         response.sendRedirect("shop.jsp?mens='Error al registrar su compra'");
                     }
                 }catch(Exception e){System.out.println(e);}
             }
         }else{
-            response.sendRedirect("shop.jsp?mens='Error al registrar su compra'");
+            
+            response.sendRedirect("/shop.jsp?mens='Error al registrar su compra'");
         }
-    
-    
-    
-    
+
     
     
 }

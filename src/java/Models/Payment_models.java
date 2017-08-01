@@ -6,6 +6,8 @@
 package Models;
 
 import Beans.Payment_Beans;
+import Conexion.Conexion;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,18 +20,23 @@ import javax.naming.spi.DirStateFactory;
  *
  * @author Marco
  */
-public class Payment_models extends Conexion
+public class Payment_models 
 {
     
     public ArrayList<Payment_Beans> listar_payment()
     {
         
             ArrayList<Payment_Beans> pb = new ArrayList<>();
+            
+            Connection cn;
+            Conexion con = new Conexion();
+            cn =  con.conectar();
+            
             PreparedStatement pst = null;
             ResultSet rs = null;
         try { 
             String sql = "call V_PAYMENT()";
-            pst =getConnection().prepareCall(sql);
+            pst =cn.prepareCall(sql);
             rs = pst.executeQuery();
             while(rs.next())
             {
@@ -43,7 +50,7 @@ public class Payment_models extends Conexion
            try{
             if(rs != null) rs.close();
             if(pst != null) pst.close();
-            if(getConnection() !=null) getConnection().close();
+           
            }catch (Exception e){}
         
     

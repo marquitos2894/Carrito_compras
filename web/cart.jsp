@@ -1,10 +1,6 @@
 <%@page import="Beans.*"%>
 <%@page import="Models.*"%>
 <%@page import="java.util.ArrayList"%>
-<%
-     HttpSession sesion = request.getSession(true);
-     ArrayList<Articulo> articulos = sesion.getAttribute("carrito") == null ? null : (ArrayList) sesion.getAttribute("carrito");
-%>
 
 
 <html lang="en">
@@ -72,7 +68,7 @@
 
     <jsp:include page="div_header.jsp"/>
     
-    <form action="Registrar_venta" method="POST">
+    <form action="Registrar_venta">
 			<div class="table-responsive cart_info">
 				<table class="table table-condensed">
 					<thead>
@@ -89,9 +85,13 @@
 					<tbody>
                                       
                                                 <%
+                                                    HttpSession sesion = request.getSession(true);
+                                                    ArrayList<Articulo> articulos = sesion.getAttribute("carrito") == null ? null : (ArrayList) sesion.getAttribute("carrito");
+                                                    
                                                     String item_cd = request.getParameter("idproducto");
                                                     double total = 0;
                                                     double shcost = 0;
+                                                    int so_no = 0;
                                                     
                                                     if(articulos != null){
                                                    
@@ -99,7 +99,8 @@
                                                     for(Articulo a: articulos){
                                                          x++;
                                                         Item_beans ib= new  Item_models().getItem_beans(a.getIdProducto());
-                                                     
+                                                        //max_no m = new so_hea_models().getMax();
+                                                        //so_no = m.getSo_no_max();
                                                         total += (a.getCantidad() * ib.getItem_unit_price_va())+(ib.getItem_tax_pe()*ib.getItem_unit_price_va())/10.0;
                                                         shcost += (a.getCantidad() * ib.getItem_tax_pe()/10);
                                                         
@@ -109,7 +110,7 @@
                                                   
                                                         <td name="item" class="cart_product">
                                                             <h4> <%=x %></h4>
-                                                            <input type="hidden" name="li_no" value="<%=x %>"/>
+                                                            <input type="hidden" name="li_no" value="<%=x%>"/>
 							</td>
                                                         
 							<td class="cart_product">
@@ -159,7 +160,18 @@
 	<section id="do_action">
 		<div class="container">
 			<div class="heading">
-				<h3>What would you like to do next?</h3>
+                            
+                                 <%  
+                                     so_hea_models shm = new so_hea_models();
+                                     for(so_hea_beans shb : shm.getAllSo_he_det())
+                                          {
+                                      //max_no mn = new so_hea_models().getMax();
+                                            %>
+                                    <input type="hidden" name="so_no" value="<%=shb.getSo_no()%>">
+                                    <label><%=shb.getSo_no()%></label>
+                                    <label>marcos</label>
+                                       <% } %>
+				<h3>MARCOS</h3>
 				<p>Choose if you have a discount code or reward points you want to use or would like to estimate your delivery cost.</p>
 			</div>
 			<div class="row">
@@ -172,7 +184,7 @@
                                                                 
 								<label>Metodo de Pago</label>
                                                                 <select name="paymet">
-                                                                    <option  >Seleccion Metode de pago</option>
+                                                                    <option>Seleccion Metode de pago</option>
                                                                     <%     
                                                                         Payment_models pm = new Payment_models();
                                                                         for(Payment_Beans pb : pm.listar_payment())
@@ -190,7 +202,8 @@
                                                     
 							<li class="single_field">
                                                             <input type="hidden" name="accion" value="RegistrarVenta">
-                                                            <input type="hidden" name="so_no" value="4">
+                                                           
+                                                             
                                                             <input type="hidden" name="cus_id" value="45636">
 								<label>Zona:</label>
                                                                 <select id="region" name="region" onchange="enviarZona()">
@@ -200,7 +213,6 @@
                                                                 for(Zone_beans zone : zm.getAllZone_models())
                                                                 {
                                                                     %>
-								
 									<option  id="region" value="<%=zone.getZone_cd()%>"><%=zone.getZone_ds()%></option>
                                                                
 								<% } %>
@@ -225,7 +237,7 @@
 				</div>
 				<div class="col-sm-6">
 					<div class="total_area">
-						<ul>
+						<ul>    <li>Cart Sub Total <span>$<%=so_no%></span></li>
 							<li>Cart Sub Total <span>$<%=total%></span></li>
                                                         <input type="hidden"  name="cart_sub_total" value="<%=total%>"/>
 							<li>Eco Tax <span></span></li>
