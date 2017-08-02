@@ -6,15 +6,17 @@
 package Models;
 
 import Beans.Item_beans;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import Conexion.Conexion;
 
 /**
  *
  * @author Marco
  */
-public class Item_models  extends Conexion{
+public class Item_models  {
     
     public ArrayList<Item_beans> getAllItem_models()
     {
@@ -22,9 +24,12 @@ public class Item_models  extends Conexion{
         PreparedStatement pst = null;
         ResultSet rs = null;
         try
-        {
+        {       Connection cn;
+            Conexion con = new Conexion();
+            cn =  con.conectar();
+            
             String sql = "call V_ITEM()";
-            pst =getConnection().prepareCall(sql);
+            pst =cn.prepareCall(sql);
             rs = pst.executeQuery();
             while(rs.next())
             {
@@ -40,7 +45,7 @@ public class Item_models  extends Conexion{
             {
                 if(rs != null) rs.close();
                 if(pst != null) pst.close();
-                if(getConnection() != null) getConnection().close();
+            
             } catch (Exception e){    
             }
         
@@ -51,12 +56,17 @@ public class Item_models  extends Conexion{
     
         public Item_beans getItem_beans(String item_cd)
         {
+            Connection cn;
+            Conexion con = new Conexion();
+            cn =  con.conectar();
+            
+            
             Item_beans item_uno = null;
             PreparedStatement pst = null;
             ResultSet rs = null;
             try{
                 String sql = "call V_ITEM_UNO(?)";
-                pst = getConnection().prepareCall(sql);
+                pst = cn.prepareCall(sql);
                 pst.setString(1,item_cd);
                 rs = pst.executeQuery();
                 while(rs.next())
@@ -70,7 +80,7 @@ public class Item_models  extends Conexion{
                     try{
                         if(rs != null){ rs.close();}
                         if(pst !=null){pst.close();}
-                        if(getConnection() != null) getConnection().close();
+                      
 
                     }catch (Exception e){
 

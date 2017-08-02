@@ -90,6 +90,43 @@ public class so_hea_models
         }
         return max;
     }  
+        
+     public so_hea_uno_beans getso_hea_beans(String so_no)
+        {
+            Connection cn;
+            Conexion con = new Conexion();
+            cn =  con.conectar();
+            
+            
+            so_hea_uno_beans  so_hea_uno = null;
+            PreparedStatement pst = null;
+            ResultSet rs = null;
+            try{
+                String sql = "call V_SO_HEA_UNO(?,?,?,?,?,?,?,?)";
+                pst = cn.prepareCall(sql);
+                pst.setString(1,so_no);
+                rs = pst.executeQuery();
+                while(rs.next())
+                {
+                    so_hea_uno = new so_hea_uno_beans(rs.getInt("so_no"),rs.getString("cus_id"),rs.getString("cus_name"),rs.getString("cus_address"),rs.getString("cus_mail"),rs.getString("zone_ds"),rs.getString("region_ds"),rs.getString("paymet_ds"));
+                }
+
+            }catch (Exception e) {
+
+            } finally {
+                    try{
+                        if(rs != null){ rs.close();}
+                        if(pst !=null){pst.close();}
+                       
+
+                    }catch (Exception e){
+
+                    }
+            }
+
+           return so_hea_uno; 
+        }    
+        
      
      
 //    public ArrayList<max_no> getMax_so_hea(){
@@ -167,39 +204,39 @@ public class so_hea_models
 //        return list_max;
 //    }
 //        
-   public max_no getMax()
-    {
-        Connection cn;
-        Conexion con = new Conexion();
-        cn =  con.conectar();
-        
-        max_no Max_no = null;
-        PreparedStatement pst = null;
-        ResultSet rs = null;
-        try{
-            String sql = "call V_SO_HEA_MAX()";
-            pst = cn.prepareCall(sql);
-            rs = pst.executeQuery();
-            while(rs.next())
-            {
-                 Max_no = new max_no(rs.getInt("so_no"));
-            }
-            
-        }catch (Exception e) {
-            
-        } finally {
-                try{
-                    if(rs != null){ rs.close();}
-                    if(pst !=null){pst.close();}
-                    
-                                
-                }catch (Exception e){
-                
-                }
-        }
-       
-       return Max_no; 
-    }     
+//   public max_no getMax()
+//    {
+//        Connection cn;
+//        Conexion con = new Conexion();
+//        cn =  con.conectar();
+//        
+//        max_no Max_no = null;
+//        PreparedStatement pst = null;
+//        ResultSet rs = null;
+//        try{
+//            String sql = "call V_SO_HEA_MAX()";
+//            pst = cn.prepareCall(sql);
+//            rs = pst.executeQuery();
+//            while(rs.next())
+//            {
+//                 Max_no = new max_no(rs.getInt("so_no"));
+//            }
+//            
+//        }catch (Exception e) {
+//            
+//        } finally {
+//                try{
+//                    if(rs != null){ rs.close();}
+//                    if(pst !=null){pst.close();}
+//                    
+//                                
+//                }catch (Exception e){
+//                
+//                }
+//        }
+//       
+//       return Max_no; 
+//    }     
         
         
 

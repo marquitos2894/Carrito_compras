@@ -25,7 +25,9 @@
 </head><!--/head-->
 
 <body>
-    <jsp:include page="div_header"/>
+    
+    
+    <jsp:include page="div_header.jsp"/>
 
 	<section id="cart_items">
 		<div class="container">
@@ -44,7 +46,13 @@
 				<p>Checkout options</p>
 				<ul class="nav">
 					<li>
-						<label><input type="checkbox"> Register Account</label>
+                                            <%
+                                            
+                                        int so_no= (Integer)session.getAttribute("p_so_no");
+                                                //(String)session.getAttribute("so_no");
+                                             
+                                            %>
+						<label><input type="checkbox"><%=so_no %></label>
 					</li>
 					<li>
 						<label><input type="checkbox"> Guest Checkout</label>

@@ -15,7 +15,7 @@ import java.sql.DriverManager;
 public class Conexion {
     
     private String username = "root";
-    private String password = "marquitosxD";
+    private String password = "mysql";
     private String hostname = "localhost";
     private String port = "3306";
     private String database = "nasadd2";

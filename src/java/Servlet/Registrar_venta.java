@@ -108,7 +108,9 @@ private void RegistrarVenta(HttpServletRequest request, HttpServletResponse resp
                     cs.setString(7, tax_va[i]);
                     int j = cs.executeUpdate();
                     if(j==1){
-                        response.sendRedirect("shop.jsp?mens='Se ha registrado su compra correctamente'"); 
+                       
+                        request.getSession().setAttribute("p_so_no",so_no);
+                        response.sendRedirect("checkout.jsp");
                         articulos.clear();
                         //request.getRequestDispatcher("/shop.jsp").forward(request, response);
                         //request.getRequestDispatcher("/params.jsp").forward(request, response);
