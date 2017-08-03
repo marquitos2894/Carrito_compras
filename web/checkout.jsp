@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<%@page import="Beans.*"%>
+<%@page import ="Models.*"%>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -39,7 +41,7 @@
 			</div><!--/breadcrums-->
 
 			<div class="step-one">
-				<h2 class="heading">Step1</h2>
+                            <center><h1 class="heading" style="align-content: center">Gracias por su compra !!</h1></center>
 			</div>
 			<div class="checkout-options">
 				<h3>New User</h3>
@@ -51,11 +53,16 @@
                                         int so_no= (Integer)session.getAttribute("p_so_no");
                                                 //(String)session.getAttribute("so_no");
                                              
+                                        so_hea_uno_beans shub = new so_hea_models().getAllhea_uno(so_no);
                                             %>
-						<label><input type="checkbox"><%=so_no %></label>
+						<label><input type="checkbox"><%=so_no%></label>
 					</li>
 					<li>
-						<label><input type="checkbox"> Guest Checkout</label>
+						<label><input type="checkbox"><%=shub.getCus_name()%></label>
+					</li>
+                                        <li>
+                                                <label><input type="checkbox"><%=shub.getRegion_ds()%></label>
+                                                <label><input type="checkbox"><%=shub.getZone_ds()%></label>
 					</li>
 					<li>
 						<a href=""><i class="fa fa-times"></i>Cancel</a>

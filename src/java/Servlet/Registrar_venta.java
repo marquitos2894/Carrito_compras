@@ -80,6 +80,7 @@ private void RegistrarVenta(HttpServletRequest request, HttpServletResponse resp
     shb.setCus_id(request.getParameter("cus_id"));
     shb.setZone_cd(request.getParameter("region"));
     shb.setPaymet_cd(request.getParameter("paymet"));
+    shb.setRegion_cd(Integer.parseInt(request.getParameter("pais_r")));
     
      boolean resp = so_hea_models.Reg_so_hea(shb);
      

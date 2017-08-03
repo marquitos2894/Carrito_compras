@@ -15,12 +15,14 @@ public class so_hea_beans {
     private String cus_id;
     private String zone_cd;
     private String paymet_cd;
+    private int region_cd;
 
-    public so_hea_beans(int so_no, String cus_id, String zone_cd, String paymet_cd) {
+    public so_hea_beans(int so_no, String cus_id, String zone_cd, String paymet_cd,int region_cd) {
         this.so_no = so_no;
         this.cus_id = cus_id;
         this.zone_cd = zone_cd;
         this.paymet_cd = paymet_cd;
+        this.region_cd = region_cd;
     }
 
     
@@ -60,7 +62,13 @@ public class so_hea_beans {
         this.paymet_cd = paymet_cd;
     }
     
+    public int getRegion_cd() {
+        return region_cd;
+    }
 
+    public void setRegion_cd(int region_cd) {
+        this.region_cd = region_cd;
+    }
     
     
     

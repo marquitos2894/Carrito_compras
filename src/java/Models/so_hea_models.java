@@ -1,6 +1,7 @@
 
 package Models;
 
+import Beans.so_hea_uno_beans;
 import Beans.max_no;
 import Beans.so_hea_beans;
 import java.sql.CallableStatement;
@@ -27,13 +28,14 @@ public class so_hea_models
         try {
             //String sql = "call I_SO_HEA(?,?,?,?)";
             
-            CallableStatement cs = cn.prepareCall("call I_SO_HEA(?,?,?,?)");
+            CallableStatement cs = cn.prepareCall("call I_SO_HEA(?,?,?,?,?)");
             //    CallableStatement st=Conexion.Conecta().prepareCall("{call spadicion(?,?,?,?)}");
 
             cs.setInt(1, shb.getSo_no());
             cs.setString(2, shb.getCus_id());
             cs.setString(3, shb.getZone_cd());
             cs.setString(4, shb.getPaymet_cd());
+            cs.setInt(5, shb.getRegion_cd());
 
             int i = cs.executeUpdate();
             if( i == 1) {
@@ -60,7 +62,7 @@ public class so_hea_models
             CallableStatement cs = cn.prepareCall("CALL max_so_no_hea()");
             ResultSet rs = cs.executeQuery();
             while(rs.next()){
-                so_he_det.add( new so_hea_beans (rs.getInt("so_no"),rs.getString("cus_id"), rs.getString("zone_cd"), rs.getString("paymet_cd")));
+                so_he_det.add( new so_hea_beans (rs.getInt("so_no"),rs.getString("cus_id"), rs.getString("zone_cd"), rs.getString("paymet_cd"),rs.getInt("region_cd")));
             }
             
         }catch(Exception e){
@@ -91,41 +93,41 @@ public class so_hea_models
         return max;
     }  
         
-     public so_hea_uno_beans getso_hea_beans(String so_no)
-        {
-            Connection cn;
-            Conexion con = new Conexion();
-            cn =  con.conectar();
-            
-            
-            so_hea_uno_beans  so_hea_uno = null;
-            PreparedStatement pst = null;
-            ResultSet rs = null;
-            try{
-                String sql = "call V_SO_HEA_UNO(?,?,?,?,?,?,?,?)";
-                pst = cn.prepareCall(sql);
-                pst.setString(1,so_no);
-                rs = pst.executeQuery();
-                while(rs.next())
-                {
-                    so_hea_uno = new so_hea_uno_beans(rs.getInt("so_no"),rs.getString("cus_id"),rs.getString("cus_name"),rs.getString("cus_address"),rs.getString("cus_mail"),rs.getString("zone_ds"),rs.getString("region_ds"),rs.getString("paymet_ds"));
-                }
-
-            }catch (Exception e) {
-
-            } finally {
-                    try{
-                        if(rs != null){ rs.close();}
-                        if(pst !=null){pst.close();}
-                       
-
-                    }catch (Exception e){
-
-                    }
-            }
-
-           return so_hea_uno; 
-        }    
+//     public so_hea_uno_beans getso_hea_beans(String so_no)
+//        {
+//            Connection cn;
+//            Conexion con = new Conexion();
+//            cn =  con.conectar();
+//            
+//            
+//            so_hea_uno_beans  so_hea_uno = null;
+//            PreparedStatement pst = null;
+//            ResultSet rs = null;
+//            try{
+//                String sql = "call V_SO_HEA_UNO(?,?,?,?,?,?,?,?)";
+//                pst = cn.prepareCall(sql);
+//                pst.setString(1,so_no);
+//                rs = pst.executeQuery();
+//                while(rs.next())
+//                {
+//                    so_hea_uno = new so_hea_uno_beans(rs.getInt("so_no"),rs.getString("cus_id"),rs.getString("cus_name"),rs.getString("cus_address"),rs.getString("cus_mail"),rs.getString("zone_ds"),rs.getString("region_ds"),rs.getString("paymet_ds"));
+//                }
+//
+//            }catch (Exception e) {
+//
+//            } finally {
+//                    try{
+//                        if(rs != null){ rs.close();}
+//                        if(pst !=null){pst.close();}
+//                       
+//
+//                    }catch (Exception e){
+//
+//                    }
+//            }
+//
+//           return so_hea_uno; 
+//        }    
         
      
      
@@ -238,7 +240,45 @@ public class so_hea_models
 //       return Max_no; 
 //    }     
         
-        
+public so_hea_uno_beans getAllhea_uno(int so_no)
+        {
+            Connection cn;
+            Conexion con = new Conexion();
+            cn =  con.conectar();
+            
+            
+            so_hea_uno_beans s_hea_uno = null;
+            PreparedStatement pst = null;
+            ResultSet rs = null;
+            try{
+                String sql = "call V_SO_HEA_UNO(?)";
+                pst = cn.prepareCall(sql);
+                pst.setInt(1,so_no);
+                rs = pst.executeQuery();
+                while(rs.next())
+                {
+                    s_hea_uno = new so_hea_uno_beans(rs.getInt("so_no"),rs.getString("cus_id"),rs.getString("cus_name"),rs.getString("cus_address"),rs.getString("cus_mail"),rs.getString("zone_ds"),rs.getString("region_ds"),rs.getString("paymet_ds"));
+                }
 
+            }catch (Exception e) {
+
+            } finally {
+                    try{
+                        if(rs != null){ rs.close();}
+                        if(pst !=null){pst.close();}
+                      
+
+                    }catch (Exception e){
+
+                    }
+            }
+
+           return s_hea_uno; 
+        }        
+
+        
+        
+        
+        
     
 }

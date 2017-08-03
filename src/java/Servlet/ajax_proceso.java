@@ -40,12 +40,12 @@ public class ajax_proceso extends HttpServlet {
             
             String zone_cd = request.getParameter("zone_cd");
      
-            out.println("<select name='pais'>");
+            out.println("<select name='pais_r'>");
             out.println("<option>Seleccione Pais</option>");
             Zone_models m = new Zone_models();
               for(Region__Beans rb : m.getAllRegion_models(zone_cd))
                     {
-            out.println("<option value="+rb.getZone_cd()+">"+rb.getRegion_ds()+"</option>");
+            out.println("<option value="+rb.getRegion_cd()+">"+rb.getRegion_ds()+"</option>");
           
                     }
             out.println("</select>");
