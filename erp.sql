@@ -39,10 +39,11 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `I_SO_HEA`(
 in p_so_no int,
 in p_cus_id char(20),
 in p_zone_cd char(15),
-in p_paymet_cd char(15)
+in p_paymet_cd char(15),
+in p_region_cd int
 )
 begin
-insert into xp_so_hea (so_no,cus_id,zone_cd,paymet_cd) values(p_so_no,p_cus_id,p_zone_cd,p_paymet_cd);
+insert into xp_so_hea (so_no,cus_id,zone_cd,paymet_cd,region_cd) values(p_so_no,p_cus_id,p_zone_cd,p_paymet_cd,p_region_cd);
 end//
 DELIMITER ;
 
@@ -110,6 +111,15 @@ DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `V_SO_HEA`()
 BEGIN
 	SELECT * FROM xp_so_hea;
+END//
+DELIMITER ;
+
+
+-- Volcando estructura para procedimiento nasadd2.V_SO_HEA_2
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` PROCEDURE `V_SO_HEA_2`()
+BEGIN
+	select max(sh.so_no), sh.cus_id,sh.zone_cd,sh.paymet_cd  from xp_so_hea sh;
 END//
 DELIMITER ;
 
@@ -220,25 +230,27 @@ INSERT INTO `xp_paymet` (`paymet_cd`, `paymet_ds`) VALUES
 
 -- Volcando estructura para tabla nasadd2.xp_region
 CREATE TABLE IF NOT EXISTS `xp_region` (
+  `region_cd` int(11) NOT NULL AUTO_INCREMENT,
   `zone_cd` char(15) DEFAULT NULL,
   `region_ds` char(35) DEFAULT NULL,
+  PRIMARY KEY (`region_cd`),
   KEY `zone_cd` (`zone_cd`),
   CONSTRAINT `xp_region_ibfk_1` FOREIGN KEY (`zone_cd`) REFERENCES `xp_zone` (`zone_cd`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
--- Volcando datos para la tabla nasadd2.xp_region: ~8 rows (aproximadamente)
+-- Volcando datos para la tabla nasadd2.xp_region: ~10 rows (aproximadamente)
 /*!40000 ALTER TABLE `xp_region` DISABLE KEYS */;
-INSERT INTO `xp_region` (`zone_cd`, `region_ds`) VALUES
-	('zone01', 'Peru'),
-	('zone01', 'Chile'),
-	('zone01', 'Argentina'),
-	('zone01', 'Colombia'),
-	('zone01', 'Venezuela'),
-	('zone02', 'España'),
-	('zone02', 'Portugal'),
-	('zone02', 'Francia'),
-	('zone03', 'china'),
-	('zone03', 'Japon');
+INSERT INTO `xp_region` (`region_cd`, `zone_cd`, `region_ds`) VALUES
+	(1, 'zone01', 'Peru'),
+	(2, 'zone01', 'Chile'),
+	(3, 'zone01', 'Argentina'),
+	(4, 'zone01', 'Colombia'),
+	(5, 'zone01', 'Venezuela'),
+	(6, 'zone02', 'España'),
+	(7, 'zone02', 'Portugal'),
+	(8, 'zone02', 'Francia'),
+	(9, 'zone03', 'china'),
+	(10, 'zone03', 'Japon');
 /*!40000 ALTER TABLE `xp_region` ENABLE KEYS */;
 
 
@@ -271,17 +283,11 @@ CREATE TABLE IF NOT EXISTS `xp_so_det` (
   CONSTRAINT `xp_so_det_ibfk_2` FOREIGN KEY (`item_cd`) REFERENCES `xp_item` (`item_cd`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Volcando datos para la tabla nasadd2.xp_so_det: ~8 rows (aproximadamente)
+-- Volcando datos para la tabla nasadd2.xp_so_det: ~0 rows (aproximadamente)
 /*!40000 ALTER TABLE `xp_so_det` DISABLE KEYS */;
 INSERT INTO `xp_so_det` (`so_no`, `line_no`, `item_cd`, `qty_no`, `item_unit_price_va`, `item_tax_pe`, `tax_va`) VALUES
-	(1, 1, 'pendrive1TB', 10.00, 40.0000, 2.00, 8.00),
-	(2, 1, 'pendrive1TB', 10.00, 40.0000, 2.00, 8.00),
-	(2, 2, 'pendrive2TB', 2.00, 70.0000, 0.00, 0.00),
-	(3, 1, 'pendrive1TB', 10.00, 40.0000, 2.00, 8.00),
-	(11, 1, 'pendrive1TB', 1.00, 40.0000, 2.00, 8.00),
-	(12, 1, 'pendrive1TB', 5.00, 40.0000, 2.00, 8.00),
-	(12, 2, 'pendrive2TB', 1.00, 70.0000, 0.00, 0.00),
-	(12, 3, 'pendrive1TB', 1.00, 40.0000, 2.00, 8.00);
+	(2, 1, 'pendrive1TB', 1.00, 40.0000, 2.00, 8.00),
+	(2, 2, 'pendrive1TB', 1.00, 40.0000, 2.00, 8.00);
 /*!40000 ALTER TABLE `xp_so_det` ENABLE KEYS */;
 
 
@@ -291,30 +297,23 @@ CREATE TABLE IF NOT EXISTS `xp_so_hea` (
   `cus_id` char(20) DEFAULT NULL,
   `zone_cd` char(15) DEFAULT NULL,
   `paymet_cd` char(15) DEFAULT NULL,
+  `region_cd` int(11) NOT NULL,
   PRIMARY KEY (`so_no`),
   KEY `zone_cd` (`zone_cd`),
   KEY `paymet_cd` (`paymet_cd`),
   KEY `cus_id` (`cus_id`),
+  KEY `region_cd` (`region_cd`),
   CONSTRAINT `xp_so_hea_ibfk_1` FOREIGN KEY (`zone_cd`) REFERENCES `xp_zone` (`zone_cd`),
   CONSTRAINT `xp_so_hea_ibfk_2` FOREIGN KEY (`paymet_cd`) REFERENCES `xp_paymet` (`paymet_cd`),
-  CONSTRAINT `xp_so_hea_ibfk_3` FOREIGN KEY (`cus_id`) REFERENCES `xp_customer` (`cus_id`)
+  CONSTRAINT `xp_so_hea_ibfk_3` FOREIGN KEY (`cus_id`) REFERENCES `xp_customer` (`cus_id`),
+  CONSTRAINT `xp_so_hea_ibfk_4` FOREIGN KEY (`region_cd`) REFERENCES `xp_region` (`region_cd`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Volcando datos para la tabla nasadd2.xp_so_hea: ~12 rows (aproximadamente)
+-- Volcando datos para la tabla nasadd2.xp_so_hea: ~1 rows (aproximadamente)
 /*!40000 ALTER TABLE `xp_so_hea` DISABLE KEYS */;
-INSERT INTO `xp_so_hea` (`so_no`, `cus_id`, `zone_cd`, `paymet_cd`) VALUES
-	(1, '45635', 'zone01', 'ccvisasig'),
-	(2, '45636', 'zone02', 'ccvisasig'),
-	(3, '45636', 'zone01', 'ccvisasig'),
-	(4, '45636', 'zone01', 'ccvisasig'),
-	(5, '45636', 'zone01', 'ccvisasig'),
-	(6, '45636', 'zone01', 'ccvisasig'),
-	(7, '45636', 'zone01', 'ccvisasig'),
-	(8, '45636', 'zone01', 'ccvisasig'),
-	(9, '45636', 'zone01', 'ccvisasig'),
-	(10, '45636', 'zone01', 'ccvisasig'),
-	(11, '45636', 'zone01', 'ccvisasig'),
-	(12, '45636', 'zone01', 'ccvisasig');
+INSERT INTO `xp_so_hea` (`so_no`, `cus_id`, `zone_cd`, `paymet_cd`, `region_cd`) VALUES
+	(1, '45636', 'zone01', 'ccvisasig', 1),
+	(2, '45636', 'zone01', 'ccvisasig', 2);
 /*!40000 ALTER TABLE `xp_so_hea` ENABLE KEYS */;
 
 
