@@ -48,6 +48,15 @@ end//
 DELIMITER ;
 
 
+-- Volcando estructura para procedimiento nasadd2.max_so_no_hea
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` PROCEDURE `max_so_no_hea`()
+begin
+	select * from xp_so_hea order by so_no desc limit 1;
+end//
+DELIMITER ;
+
+
 -- Volcando estructura para procedimiento nasadd2.V_IMAGE
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `V_IMAGE`( IN p_item_cd VARCHAR(15)
@@ -106,6 +115,15 @@ END//
 DELIMITER ;
 
 
+-- Volcando estructura para procedimiento nasadd2.V_SO_DET
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` PROCEDURE `V_SO_DET`(in p_so_no int)
+begin
+select * from xp_so_det where so_no = p_so_no;
+end//
+DELIMITER ;
+
+
 -- Volcando estructura para procedimiento nasadd2.V_SO_HEA
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `V_SO_HEA`()
@@ -130,6 +148,21 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `V_SO_HEA_MAX`()
 BEGIN
 	select max(so_no) from xp_so_hea;
 END//
+DELIMITER ;
+
+
+-- Volcando estructura para procedimiento nasadd2.V_SO_HEA_UNO
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` PROCEDURE `V_SO_HEA_UNO`(in p_so_no int)
+begin
+	select  sh.so_no,cu.cus_id,cu.cus_name,cu.cus_address,cu.cus_mail,zo.zone_ds,re.region_ds,pa.paymet_ds
+	from xp_so_hea sh inner join xp_customer cu
+	on sh.cus_id = cu.cus_id 
+	inner join xp_zone zo on  zo.zone_cd = sh.zone_cd
+	inner join xp_region re on re.region_cd = sh.region_cd
+	inner join xp_paymet pa on pa.paymet_cd = sh.paymet_cd
+	where so_no = p_so_no;
+end//
 DELIMITER ;
 
 
@@ -283,7 +316,7 @@ CREATE TABLE IF NOT EXISTS `xp_so_det` (
   CONSTRAINT `xp_so_det_ibfk_2` FOREIGN KEY (`item_cd`) REFERENCES `xp_item` (`item_cd`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Volcando datos para la tabla nasadd2.xp_so_det: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla nasadd2.xp_so_det: ~2 rows (aproximadamente)
 /*!40000 ALTER TABLE `xp_so_det` DISABLE KEYS */;
 INSERT INTO `xp_so_det` (`so_no`, `line_no`, `item_cd`, `qty_no`, `item_unit_price_va`, `item_tax_pe`, `tax_va`) VALUES
 	(2, 1, 'pendrive1TB', 1.00, 40.0000, 2.00, 8.00),
@@ -309,7 +342,7 @@ CREATE TABLE IF NOT EXISTS `xp_so_hea` (
   CONSTRAINT `xp_so_hea_ibfk_4` FOREIGN KEY (`region_cd`) REFERENCES `xp_region` (`region_cd`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Volcando datos para la tabla nasadd2.xp_so_hea: ~1 rows (aproximadamente)
+-- Volcando datos para la tabla nasadd2.xp_so_hea: ~2 rows (aproximadamente)
 /*!40000 ALTER TABLE `xp_so_hea` DISABLE KEYS */;
 INSERT INTO `xp_so_hea` (`so_no`, `cus_id`, `zone_cd`, `paymet_cd`, `region_cd`) VALUES
 	(1, '45636', 'zone01', 'ccvisasig', 1),
