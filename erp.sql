@@ -1,19 +1,20 @@
 -- --------------------------------------------------------
 -- Host:                         127.0.0.1
--- Versión del servidor:         10.1.25-MariaDB - mariadb.org binary distribution
--- SO del servidor:              Win32
--- HeidiSQL Versión:             9.3.0.4984
+-- Versión del servidor:         5.7.11-log - MySQL Community Server (GPL)
+-- SO del servidor:              Win64
+-- HeidiSQL Versión:             9.4.0.5125
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+
 
 -- Volcando estructura de base de datos para nasadd2
 CREATE DATABASE IF NOT EXISTS `nasadd2` /*!40100 DEFAULT CHARACTER SET latin1 */;
 USE `nasadd2`;
-
 
 -- Volcando estructura para procedimiento nasadd2.I_SO_DET
 DELIMITER //
@@ -32,7 +33,6 @@ begin
 end//
 DELIMITER ;
 
-
 -- Volcando estructura para procedimiento nasadd2.I_SO_HEA
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `I_SO_HEA`(
@@ -47,7 +47,6 @@ insert into xp_so_hea (so_no,cus_id,zone_cd,paymet_cd,region_cd) values(p_so_no,
 end//
 DELIMITER ;
 
-
 -- Volcando estructura para procedimiento nasadd2.max_so_no_hea
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `max_so_no_hea`()
@@ -55,7 +54,6 @@ begin
 	select * from xp_so_hea order by so_no desc limit 1;
 end//
 DELIMITER ;
-
 
 -- Volcando estructura para procedimiento nasadd2.V_IMAGE
 DELIMITER //
@@ -66,7 +64,6 @@ BEGIN
 END//
 DELIMITER ;
 
-
 -- Volcando estructura para procedimiento nasadd2.V_ITEM
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `V_ITEM`()
@@ -74,7 +71,6 @@ BEGIN
 	SELECT * FROM xp_item;
 END//
 DELIMITER ;
-
 
 -- Volcando estructura para procedimiento nasadd2.V_ITEM_UNO
 DELIMITER //
@@ -84,7 +80,6 @@ BEGIN
 END//
 DELIMITER ;
 
-
 -- Volcando estructura para procedimiento nasadd2.V_PAYMENT
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `V_PAYMENT`()
@@ -92,7 +87,6 @@ BEGIN
 	SELECT * FROM XP_PAYMET;
 END//
 DELIMITER ;
-
 
 -- Volcando estructura para procedimiento nasadd2.V_REGION
 DELIMITER //
@@ -104,7 +98,6 @@ BEGIN
 END//
 DELIMITER ;
 
-
 -- Volcando estructura para procedimiento nasadd2.V_REGION2
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `V_REGION2`(
@@ -114,7 +107,6 @@ BEGIN
 END//
 DELIMITER ;
 
-
 -- Volcando estructura para procedimiento nasadd2.V_SO_DET
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `V_SO_DET`(in p_so_no int)
@@ -123,6 +115,14 @@ select * from xp_so_det where so_no = p_so_no;
 end//
 DELIMITER ;
 
+-- Volcando estructura para procedimiento nasadd2.V_SO_DET_P
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` PROCEDURE `V_SO_DET_P`(in p_so_no int
+)
+begin 
+	select * from xp_so_det where so_no = p_so_no;
+end//
+DELIMITER ;
 
 -- Volcando estructura para procedimiento nasadd2.V_SO_HEA
 DELIMITER //
@@ -132,7 +132,6 @@ BEGIN
 END//
 DELIMITER ;
 
-
 -- Volcando estructura para procedimiento nasadd2.V_SO_HEA_2
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `V_SO_HEA_2`()
@@ -141,7 +140,6 @@ BEGIN
 END//
 DELIMITER ;
 
-
 -- Volcando estructura para procedimiento nasadd2.V_SO_HEA_MAX
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `V_SO_HEA_MAX`()
@@ -149,7 +147,6 @@ BEGIN
 	select max(so_no) from xp_so_hea;
 END//
 DELIMITER ;
-
 
 -- Volcando estructura para procedimiento nasadd2.V_SO_HEA_UNO
 DELIMITER //
@@ -165,7 +162,6 @@ begin
 end//
 DELIMITER ;
 
-
 -- Volcando estructura para procedimiento nasadd2.V_ZONE
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `V_ZONE`()
@@ -173,7 +169,6 @@ begin
 	select * from xp_zone;
 end//
 DELIMITER ;
-
 
 -- Volcando estructura para tabla nasadd2.xp_customer
 CREATE TABLE IF NOT EXISTS `xp_customer` (
@@ -191,7 +186,6 @@ INSERT INTO `xp_customer` (`cus_id`, `cus_name`, `cus_address`, `cus_mail`) VALU
 	('45636', 'John Wayne', 'Av.Pou 1545', 'jwayne@gg.com');
 /*!40000 ALTER TABLE `xp_customer` ENABLE KEYS */;
 
-
 -- Volcando estructura para tabla nasadd2.xp_image
 CREATE TABLE IF NOT EXISTS `xp_image` (
   `item_cd` char(15) NOT NULL,
@@ -207,7 +201,6 @@ INSERT INTO `xp_image` (`item_cd`, `image_no`, `image_im`) VALUES
 	('pendrive1TB', 1, _binary 0x32313336333430303341303033323030),
 	('pendrive2TB', 1, _binary 0x3431303033343030334130303332303033383030323030303030);
 /*!40000 ALTER TABLE `xp_image` ENABLE KEYS */;
-
 
 -- Volcando estructura para tabla nasadd2.xp_item
 CREATE TABLE IF NOT EXISTS `xp_item` (
@@ -231,7 +224,6 @@ INSERT INTO `xp_item` (`item_cd`, `item_ds`, `itemtype_cd`, `item_cur_cd`, `item
 	('pendrive2TB', 'pen drive 2 TB', 'pendrive', 'USD', 70.0000, 50.0000, 1, 0.0000);
 /*!40000 ALTER TABLE `xp_item` ENABLE KEYS */;
 
-
 -- Volcando estructura para tabla nasadd2.xp_itemtype
 CREATE TABLE IF NOT EXISTS `xp_itemtype` (
   `itemtype_cd` char(15) NOT NULL,
@@ -246,7 +238,6 @@ INSERT INTO `xp_itemtype` (`itemtype_cd`, `itemtype_ds`) VALUES
 	('smartphone', 'smartphone');
 /*!40000 ALTER TABLE `xp_itemtype` ENABLE KEYS */;
 
-
 -- Volcando estructura para tabla nasadd2.xp_paymet
 CREATE TABLE IF NOT EXISTS `xp_paymet` (
   `paymet_cd` char(15) NOT NULL,
@@ -259,7 +250,6 @@ CREATE TABLE IF NOT EXISTS `xp_paymet` (
 INSERT INTO `xp_paymet` (`paymet_cd`, `paymet_ds`) VALUES
 	('ccvisasig', 'credit card visa asignature');
 /*!40000 ALTER TABLE `xp_paymet` ENABLE KEYS */;
-
 
 -- Volcando estructura para tabla nasadd2.xp_region
 CREATE TABLE IF NOT EXISTS `xp_region` (
@@ -286,7 +276,6 @@ INSERT INTO `xp_region` (`region_cd`, `zone_cd`, `region_ds`) VALUES
 	(10, 'zone03', 'Japon');
 /*!40000 ALTER TABLE `xp_region` ENABLE KEYS */;
 
-
 -- Volcando estructura para tabla nasadd2.xp_scc
 CREATE TABLE IF NOT EXISTS `xp_scc` (
   `scc_cd` char(15) NOT NULL,
@@ -299,7 +288,6 @@ CREATE TABLE IF NOT EXISTS `xp_scc` (
 INSERT INTO `xp_scc` (`scc_cd`, `scc_ds`) VALUES
 	('fob01', 'fob 01');
 /*!40000 ALTER TABLE `xp_scc` ENABLE KEYS */;
-
 
 -- Volcando estructura para tabla nasadd2.xp_so_det
 CREATE TABLE IF NOT EXISTS `xp_so_det` (
@@ -316,13 +304,21 @@ CREATE TABLE IF NOT EXISTS `xp_so_det` (
   CONSTRAINT `xp_so_det_ibfk_2` FOREIGN KEY (`item_cd`) REFERENCES `xp_item` (`item_cd`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Volcando datos para la tabla nasadd2.xp_so_det: ~2 rows (aproximadamente)
+-- Volcando datos para la tabla nasadd2.xp_so_det: ~7 rows (aproximadamente)
 /*!40000 ALTER TABLE `xp_so_det` DISABLE KEYS */;
 INSERT INTO `xp_so_det` (`so_no`, `line_no`, `item_cd`, `qty_no`, `item_unit_price_va`, `item_tax_pe`, `tax_va`) VALUES
 	(2, 1, 'pendrive1TB', 1.00, 40.0000, 2.00, 8.00),
-	(2, 2, 'pendrive1TB', 1.00, 40.0000, 2.00, 8.00);
+	(2, 2, 'pendrive1TB', 1.00, 40.0000, 2.00, 8.00),
+	(3, 1, 'pendrive1TB', 1.00, 40.0000, 2.00, 8.00),
+	(3, 2, 'pendrive2TB', 1.00, 70.0000, 0.00, 0.00),
+	(4, 1, 'pendrive1TB', 5.00, 40.0000, 2.00, 8.00),
+	(5, 1, 'pendrive2TB', 10.00, 70.0000, 0.00, 0.00),
+	(5, 2, 'pendrive1TB', 20.00, 40.0000, 2.00, 8.00),
+	(6, 1, 'pendrive1TB', 10.00, 40.0000, 2.00, 8.00),
+	(6, 2, 'pendrive2TB', 2.00, 70.0000, 0.00, 0.00),
+	(7, 1, 'pendrive1TB', 1.00, 40.0000, 2.00, 8.00),
+	(8, 1, 'pendrive1TB', 1.00, 40.0000, 2.00, 8.00);
 /*!40000 ALTER TABLE `xp_so_det` ENABLE KEYS */;
-
 
 -- Volcando estructura para tabla nasadd2.xp_so_hea
 CREATE TABLE IF NOT EXISTS `xp_so_hea` (
@@ -342,13 +338,18 @@ CREATE TABLE IF NOT EXISTS `xp_so_hea` (
   CONSTRAINT `xp_so_hea_ibfk_4` FOREIGN KEY (`region_cd`) REFERENCES `xp_region` (`region_cd`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Volcando datos para la tabla nasadd2.xp_so_hea: ~2 rows (aproximadamente)
+-- Volcando datos para la tabla nasadd2.xp_so_hea: ~5 rows (aproximadamente)
 /*!40000 ALTER TABLE `xp_so_hea` DISABLE KEYS */;
 INSERT INTO `xp_so_hea` (`so_no`, `cus_id`, `zone_cd`, `paymet_cd`, `region_cd`) VALUES
 	(1, '45636', 'zone01', 'ccvisasig', 1),
-	(2, '45636', 'zone01', 'ccvisasig', 2);
+	(2, '45636', 'zone01', 'ccvisasig', 2),
+	(3, '45636', 'zone02', 'ccvisasig', 6),
+	(4, '45636', 'zone01', 'ccvisasig', 1),
+	(5, '45636', 'zone01', 'ccvisasig', 1),
+	(6, '45636', 'zone01', 'ccvisasig', 1),
+	(7, '45636', 'zone01', 'ccvisasig', 1),
+	(8, '45636', 'zone02', 'ccvisasig', 7);
 /*!40000 ALTER TABLE `xp_so_hea` ENABLE KEYS */;
-
 
 -- Volcando estructura para tabla nasadd2.xp_so_shc
 CREATE TABLE IF NOT EXISTS `xp_so_shc` (
@@ -360,13 +361,12 @@ CREATE TABLE IF NOT EXISTS `xp_so_shc` (
   PRIMARY KEY (`so_no`,`line_no`,`scc_cd`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Volcando datos para la tabla nasadd2.xp_so_shc: ~1 rows (aproximadamente)
+-- Volcando datos para la tabla nasadd2.xp_so_shc: ~2 rows (aproximadamente)
 /*!40000 ALTER TABLE `xp_so_shc` DISABLE KEYS */;
 INSERT INTO `xp_so_shc` (`so_no`, `line_no`, `scc_cd`, `scc_uni_va`, `scc_total_va`) VALUES
 	(2, 1, 'fob01', 0.20, 2.00),
 	(2, 2, 'fob01', 0.20, 0.40);
 /*!40000 ALTER TABLE `xp_so_shc` ENABLE KEYS */;
-
 
 -- Volcando estructura para tabla nasadd2.xp_zone
 CREATE TABLE IF NOT EXISTS `xp_zone` (
@@ -382,7 +382,6 @@ INSERT INTO `xp_zone` (`zone_cd`, `zone_ds`) VALUES
 	('zone02', 'Europa'),
 	('zone03', 'Asia');
 /*!40000 ALTER TABLE `xp_zone` ENABLE KEYS */;
-
 
 -- Volcando estructura para tabla nasadd2.xp_zscc
 CREATE TABLE IF NOT EXISTS `xp_zscc` (
@@ -400,6 +399,7 @@ CREATE TABLE IF NOT EXISTS `xp_zscc` (
 INSERT INTO `xp_zscc` (`scc_cd`, `zone_cd`, `scc_uni_va`) VALUES
 	('fob01', 'zone01', 0.20);
 /*!40000 ALTER TABLE `xp_zscc` ENABLE KEYS */;
+
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
