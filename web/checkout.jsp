@@ -48,21 +48,15 @@
 				<p>Checkout options</p>
 				<ul class="nav">
 					<li>
-                                            <%
-                                            
-                                        int so_no= (Integer)session.getAttribute("p_so_no");
-                                                //(String)session.getAttribute("so_no");
-                                             
-                                        so_hea_uno_beans shub = new so_hea_models().getAllhea_uno(so_no);
-                                            %>
-						<label><input type="checkbox"><%=so_no%></label>
+                                      
+						<label><input type="checkbox"></label>
 					</li>
 					<li>
-						<label><input type="checkbox"><%=shub.getCus_name()%></label>
+						<label><input type="checkbox"></label>
 					</li>
                                         <li>
-                                                <label><input type="checkbox"><%=shub.getRegion_ds()%></label>
-                                                <label><input type="checkbox"><%=shub.getZone_ds()%></label>
+                                                <label><input type="checkbox"></label>
+                                                <label><input type="checkbox"></label>
 					</li>
 					<li>
 						<a href=""><i class="fa fa-times"></i>Cancel</a>
@@ -80,10 +74,17 @@
 						<div class="shopper-info">
 							<p>Shopper Information</p>
 							<form>
-								<input type="text" placeholder="Display Name">
-								<input type="text" placeholder="User Name">
-								<input type="password" placeholder="Password">
-								<input type="password" placeholder="Confirm password">
+                                                                  <%
+                                            
+                                                    int so_no= (Integer)session.getAttribute("p_so_no");
+                                                    //(String)session.getAttribute("so_no");
+                                             
+                                                    so_hea_uno_beans shub = new so_hea_models().getAllhea_uno(so_no);
+                                            %>
+                                            <label>Order</label><input type="text" disabled="" placeholder="Display Name" value="<%=so_no%>">
+                                            <label>Id</label><input type="text" disabled="" placeholder="" value="<%=shub.getCus_id()%>">
+                                            <label>Name</label><input type="text" disabled="" placeholder="" value="<%=shub.getCus_name()%>">
+                                            <label>Address</label><input type="text" disabled="" placeholder="" value="<%=shub.getCus_address()%>">
 							</form>
 							<a class="btn btn-primary" href="">Get Quotes</a>
 							<a class="btn btn-primary" href="">Continue</a>
@@ -91,59 +92,20 @@
 					</div>
 					<div class="col-sm-5 clearfix">
 						<div class="bill-to">
-							<p>Bill To</p>
+							<p>Shopper Information</p>
 							<div class="form-one">
 								<form>
-									<input type="text" placeholder="Company Name">
-									<input type="text" placeholder="Email*">
-									<input type="text" placeholder="Title">
-									<input type="text" placeholder="First Name *">
-									<input type="text" placeholder="Middle Name">
-									<input type="text" placeholder="Last Name *">
-									<input type="text" placeholder="Address 1 *">
-									<input type="text" placeholder="Address 2">
+                                                                    <label>Mail</label><input type="text" disabled="" placeholder="" value="<%=shub.getCus_mail()%>">
+								<label>Zone</label><input type="text"  disabled="" placeholder="" value="<%=shub.getZone_ds()%>">
+								<label>Country</label><input type="text"  disabled="" placeholder="" value="<%=shub.getRegion_ds() %>">
+								<label>Country</label><input type="text" disabled="" placeholder="" value="<%=shub.getPaymet_ds() %>">
+								
 								</form>
 							</div>
-							<div class="form-two">
-								<form>
-									<input type="text" placeholder="Zip / Postal Code *">
-									<select>
-										<option>-- Country --</option>
-										<option>United States</option>
-										<option>Bangladesh</option>
-										<option>UK</option>
-										<option>India</option>
-										<option>Pakistan</option>
-										<option>Ucrane</option>
-										<option>Canada</option>
-										<option>Dubai</option>
-									</select>
-									<select>
-										<option>-- State / Province / Region --</option>
-										<option>United States</option>
-										<option>Bangladesh</option>
-										<option>UK</option>
-										<option>India</option>
-										<option>Pakistan</option>
-										<option>Ucrane</option>
-										<option>Canada</option>
-										<option>Dubai</option>
-									</select>
-									<input type="password" placeholder="Confirm password">
-									<input type="text" placeholder="Phone *">
-									<input type="text" placeholder="Mobile Phone">
-									<input type="text" placeholder="Fax">
-								</form>
-							</div>
+							
 						</div>
 					</div>
-					<div class="col-sm-4">
-						<div class="order-message">
-							<p>Shipping Order</p>
-							<textarea name="message"  placeholder="Notes about your order, Special Notes for Delivery" rows="16"></textarea>
-							<label><input type="checkbox"> Shipping to bill address</label>
-						</div>	
-					</div>					
+							
 				</div>
 			</div>
 			<div class="review-payment">
@@ -163,16 +125,23 @@
 						</tr>
 					</thead>
 					<tbody>
+                                               <% 
+                                                            so_det_models sd = new so_det_models();
+                                                            for(so_det_p_beans sdb : sd.getAllso_d_p(so_no))
+                                                            {
+                                                        %>
 						<tr>
+                                                    
 							<td class="cart_product">
 								<a href=""><img src="images/cart/one.png" alt=""></a>
 							</td>
+                                                     
 							<td class="cart_description">
-								<h4><a href="">Colorblock Scuba</a></h4>
+								<h4><%=sdb.getItem_cd()%></h4>
 								<p>Web ID: 1089772</p>
 							</td>
 							<td class="cart_price">
-								<p>$59</p>
+								<p><%=sdb.getItem_unit_price_va()%></p>
 							</td>
 							<td class="cart_quantity">
 								<div class="cart_quantity_button">
@@ -262,6 +231,7 @@
 								</table>
 							</td>
 						</tr>
+                                                <%}%>
 					</tbody>
 				</table>
 			</div>
